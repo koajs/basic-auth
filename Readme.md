@@ -15,7 +15,7 @@ $ npm install koa-basic-auth
 var koa = require('koa');
 var app = koa();
 
-app.context(require('./'));
+app.context(require('koa-basic-auth'));
 
 app.use(function(){
   return function *(){
