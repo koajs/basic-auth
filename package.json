@@ -1,0 +1,26 @@
+{
+  "name": "koa-basic-auth",
+  "description": "Context .auth getter for parsing basic auth",
+  "repository": "koajs/basic-auth",
+  "version": "1.0.0",
+  "keywords": [
+    "koa",
+    "auth",
+    "authentication",
+    "context",
+    "basicauth",
+    "basic auth"
+  ],
+  "files": [
+    "index.js"
+  ],
+  "devDependencies": {
+    "koa": "0.0.1"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "should": "~1.2.2",
+    "mocha": "~1.12.0",
+    "supertest": "~0.7.1"
+  }
+}
