@@ -1,13 +1,12 @@
 {
   "name": "koa-basic-auth",
-  "description": "Context .auth getter for parsing basic auth",
+  "description": "Blanket basic auth middleware for koa",
   "repository": "koajs/basic-auth",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "keywords": [
     "koa",
     "auth",
     "authentication",
-    "context",
     "basicauth",
     "basic auth"
   ],
