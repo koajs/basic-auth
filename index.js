@@ -1,18 +1,36 @@
 
-module.exports = {
-  get auth() {
-    var auth = this.get('Authorization');
-    if (!auth) return;
+/**
+ * Module dependencies.
+ */
 
-    // malformed
-    var parts = auth.split(' ');
-    if ('basic' != parts[0].toLowerCase()) return;
-    if (!parts[1]) return;
-    auth = parts[1];
+var auth = require('basic-auth');
+var assert = require('assert');
 
-    // credentials
-    auth = new Buffer(auth, 'base64').toString().match(/^([^:]*):(.*)$/);
-    if (!auth) return;
-    return { user: auth[1], pass: auth[2] };
-  }
+/**
+ * Return basic auth middleware with
+ * the given options:
+ *
+ *  - `name` username
+ *  - `pass` password
+ *
+ * @param {Object} opts
+ * @return {GeneratorFunction}
+ * @api public
+ */
+
+module.exports = function(opts){
+  opts = opts || {};
+
+  assert(opts.name, 'basic auth .name required');
+  assert(opts.pass, 'basic auth .pass required');
+
+  return function *basicAuth(next){
+    var user = auth(this);
+
+    if (user.name == opts.name && user.pass == opts.pass) {
+      yield next;
+    } else {
+      this.throw(401);
+    }
+  };
 };

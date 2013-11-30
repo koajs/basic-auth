@@ -1,19 +1,32 @@
 
 var koa = require('koa');
+var auth = require('./');
 var app = koa();
 
-app.context(require('./'));
+// custom 401 handling
 
-app.use(function(){
-  return function *(){
-    if (this.auth) {
-      this.body = 'logged in as ' + this.auth.user + ' ' + this.auth.pass;
+app.use(function *(next){
+  try {
+    yield next;
+  } catch (err) {
+    if (401 == err.status) {
+      this.status = 401;
+      this.body = 'cant haz that';
     } else {
-      this.body = 'forbidden';
+      throw err;
     }
   }
 });
 
-app.listen(3000);
+// require auth
 
+app.use(auth({ name: 'tj', pass: 'tobi' }));
+
+// secret response
+
+app.use(function *(){
+  this.body = 'secret';
+});
+
+app.listen(3000);
 console.log('listening on port 3000');

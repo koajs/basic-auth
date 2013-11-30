@@ -1,7 +1,8 @@
 
 # koa-basic-auth
 
-  `Context#auth` getter for koa for parsing basic auth.
+  Add simple "blanket" basic auth with username / password. If you require
+  anything more specific just use the [basic-auth](https://github.com/visionmedia/node-basic-auth) module.
 
 ## Installation
 
@@ -11,24 +12,54 @@ $ npm install koa-basic-auth
 
 ## Example
 
+  Password protect downstream middleware:
+
 ```js
+var auth = require('koa-basic-auth');
 var koa = require('koa');
 var app = koa();
 
-app.context(require('koa-basic-auth'));
+// custom 401 handling
 
-app.use(function(){
-  return function *(){
-    if (this.auth) {
-      this.body = 'logged in as ' + this.auth.user + ' ' + this.auth.pass;
+app.use(function *(next){
+  try {
+    yield next;
+  } catch (err) {
+    if (401 == err.status) {
+      this.status = 401;
+      this.body = 'cant haz that';
     } else {
-      this.body = 'forbidden';
+      throw err;
     }
   }
 });
 
+// require auth
+
+app.use(auth({ name: 'tj', pass: 'tobi' }));
+
+// secret response
+
+app.use(function *(){
+  this.body = 'secret';
+});
+
 app.listen(3000);
 console.log('listening on port 3000');
+```
+
+  Example request:
+
+```
+$ curl -H "Authorization: basic dGo6dG9iaQ==" http://localhost:3000/ -i
+HTTP/1.1 200 OK
+X-Powered-By: koa
+Content-Type: text/plain; charset=utf-8
+Content-Length: 6
+Date: Sat, 30 Nov 2013 19:35:17 GMT
+Connection: keep-alive
+
+secret
 ```
 
 ## License
