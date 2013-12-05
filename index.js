@@ -27,7 +27,7 @@ module.exports = function(opts){
   return function *basicAuth(next){
     var user = auth(this);
 
-    if (user.name == opts.name && user.pass == opts.pass) {
+    if (user && user.name == opts.name && user.pass == opts.pass) {
       yield next;
     } else {
       this.throw(401);
