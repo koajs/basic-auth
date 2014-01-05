@@ -3,6 +3,9 @@
   "description": "Blanket basic auth middleware for koa",
   "repository": "koajs/basic-auth",
   "version": "1.1.0",
+  "scripts": {
+    "test": "make test"
+  },
   "keywords": [
     "koa",
     "auth",
@@ -15,7 +18,6 @@
   ],
   "devDependencies": {
     "koa": "koajs/koa",
-    "should": "~1.2.2",
     "mocha": "~1.12.0",
     "supertest": "~0.7.1"
   },

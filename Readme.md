@@ -1,5 +1,5 @@
 
-# koa-basic-auth
+# koa-basic-auth [![Build Status](https://travis-ci.org/koajs/basic-auth.png)](https://travis-ci.org/koajs/basic-auth)
 
   Add simple "blanket" basic auth with username / password. If you require
   anything more specific just use the [basic-auth](https://github.com/visionmedia/node-basic-auth) module.
