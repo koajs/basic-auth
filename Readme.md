@@ -1,4 +1,3 @@
-
 # koa-basic-auth [![Build Status](https://travis-ci.org/koajs/basic-auth.png)](https://travis-ci.org/koajs/basic-auth)
 
   Add simple "blanket" basic auth with username / password. If you require
@@ -27,6 +26,7 @@ app.use(function *(next){
   } catch (err) {
     if (401 == err.status) {
       this.status = 401;
+      this.set('WWW-Authenticate', 'Basic');
       this.body = 'cant haz that';
     } else {
       throw err;
