@@ -62,6 +62,15 @@ Connection: keep-alive
 secret
 ```
 
+ Using the [mount](https://github.com/koajs/mount) middleware you may specify auth for a given prefix:
+
+```js
+var mount = require('koa-mount');
+var auth = require('koa-basic-auth');
+
+app.use(mount('/admin', auth({ name: 'tobi', pass: 'ferret' })));
+```
+
 ## License
 
   MIT
