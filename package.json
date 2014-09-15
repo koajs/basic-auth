@@ -17,12 +17,12 @@
     "index.js"
   ],
   "devDependencies": {
-    "koa": "koajs/koa",
-    "mocha": "~1.12.0",
-    "supertest": "~0.7.1"
+    "koa": "*",
+    "mocha": "^1.12.0",
+    "supertest": "0"
   },
   "license": "MIT",
   "dependencies": {
-    "basic-auth": "0.0.1"
+    "basic-auth": "^1.0.0"
   }
 }
