@@ -1,10 +1,12 @@
 
+'use strict';
+
 /**
  * Module dependencies.
  */
 
-var auth = require('basic-auth');
-var assert = require('assert');
+const auth = require('basic-auth');
+const assert = require('assert');
 
 /**
  * Return basic auth middleware with
@@ -24,13 +26,13 @@ module.exports = function(opts){
   assert(opts.name, 'basic auth .name required');
   assert(opts.pass, 'basic auth .pass required');
 
-  return function *basicAuth(next){
-    var user = auth(this);
+  return function basicAuth(ctx, next){
+    const user = auth(ctx);
 
     if (user && user.name == opts.name && user.pass == opts.pass) {
-      yield next;
+      return next();
     } else {
-      this.throw(401);
+      ctx.throw(401);
     }
   };
 };

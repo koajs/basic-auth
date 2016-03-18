@@ -1,26 +1,29 @@
-var basicAuth = require('..');
-var request = require('supertest');
-var koa = require('koa');
-var assert = require('assert');
 
-describe('Koa Basic Auth', function(){
-  describe('setup', function(){
-    it('should throw an error when called with no name', function(){
-      assert.throws(function(){
+'use strict';
+
+const request = require('supertest');
+const assert = require('assert');
+const basicAuth = require('..');
+const Koa = require('koa');
+
+describe('Koa Basic Auth', () => {
+  describe('setup', () => {
+    it('should throw an error when called with no name', () => {
+      assert.throws(() => {
         basicAuth({ pass: 'pass' });
       });
     })
 
-    it('should throw an error when called with no pass', function(){
-      assert.throws(function(){
+    it('should throw an error when called with no pass', () => {
+      assert.throws(() => {
         basicAuth({ name: 'user' });
       });
     })
   })
 
-  describe('with no credentials', function(){
-    it('should `throw` 401', function(done){
-      var app = koa();
+  describe('with no credentials', () => {
+    it('should `throw` 401', done => {
+      const app = new Koa();
 
       app.use(basicAuth({ name: 'user', pass: 'pass' }));
 
@@ -31,9 +34,9 @@ describe('Koa Basic Auth', function(){
     })
   })
 
-  describe('with invalid credentials', function(){
-    it('should `throw` 401', function(done){
-      var app = koa();
+  describe('with invalid credentials', () => {
+    it('should `throw` 401', done => {
+      const app = new Koa();
 
       app.use(basicAuth({ name: 'user', pass: 'pass' }));
 
@@ -45,13 +48,13 @@ describe('Koa Basic Auth', function(){
     })
   })
 
-  describe('with valid credentials', function(){
-    it('should call the next middleware', function(done){
-      var app = koa();
+  describe('with valid credentials', () => {
+    it('should call the next middleware', done => {
+      const app = new Koa();
 
       app.use(basicAuth({ name: 'user', pass: 'pass' }));
-      app.use(function *(){
-        this.body = 'Protected';
+      app.use(ctx => {
+        ctx.body = 'Protected';
       })
 
       request(app.listen())

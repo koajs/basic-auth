@@ -20,7 +20,7 @@
   ],
   "devDependencies": {
     "istanbul": "0",
-    "koa": "1",
+    "koa": "^2.0.0-alpha.3",
     "mocha": "2",
     "supertest": "1"
   },
