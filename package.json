@@ -19,13 +19,13 @@
     "index.js"
   ],
   "devDependencies": {
-    "istanbul-harmony": "0",
-    "koa": "*",
-    "mocha": "^2.3.4",
-    "supertest": "1.1.0"
+    "istanbul": "0",
+    "koa": "1",
+    "mocha": "2",
+    "supertest": "1"
   },
   "license": "MIT",
   "dependencies": {
-    "basic-auth": "^1.0.0"
+    "basic-auth": "^1.0.3"
   }
 }
