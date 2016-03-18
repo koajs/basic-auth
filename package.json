@@ -4,9 +4,9 @@
   "repository": "koajs/basic-auth",
   "version": "1.1.2",
   "scripts": {
-    "test": "NODE_ENV=test mocha --harmony-generators --reporter spec",
-    "test-cov": "NODE_ENV=test node --harmony-generators ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha",
-    "test-travis": "NODE_ENV=test node --harmony-generators ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly"
+    "test": "NODE_ENV=test mocha --reporter spec",
+    "test-cov": "NODE_ENV=test istanbul cover ./node_modules/.bin/_mocha",
+    "test-travis": "NODE_ENV=test istanbul cover ./node_modules/.bin/_mocha --report lcovonly"
   },
   "keywords": [
     "koa",
