@@ -7,6 +7,7 @@
 
 const auth = require('basic-auth');
 const assert = require('assert');
+const _ = require('lodash');
 
 /**
  * Return basic auth middleware with
@@ -23,13 +24,17 @@ const assert = require('assert');
 module.exports = function(opts){
   opts = opts || {};
 
-  assert(opts.name, 'basic auth .name required');
-  assert(opts.pass, 'basic auth .pass required');
+  if (_.isArray(opts) === false) {
+    assert(opts.name, 'basic auth .name required');
+    assert(opts.pass, 'basic auth .pass required');
+  }
 
   return function basicAuth(ctx, next){
     const user = auth(ctx);
-
-    if (user && user.name == opts.name && user.pass == opts.pass) {
+    
+    if (user && 
+       ((!_.isArray(opts) && user.name == opts.name && user.pass == opts.pass)
+       || (_.isArray(opts) && _.some(opts, {name: user.name, pass: user.pass}))) ) {
       return next();
     } else {
       ctx.throw(401);

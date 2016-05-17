@@ -34,7 +34,7 @@ describe('Koa Basic Auth', () => {
     })
   })
 
-  describe('with invalid credentials', () => {
+  describe('with invalid credentials as object', () => {
     it('should `throw` 401', done => {
       const app = new Koa();
 
@@ -48,7 +48,7 @@ describe('Koa Basic Auth', () => {
     })
   })
 
-  describe('with valid credentials', () => {
+  describe('with valid credentials as object', () => {
     it('should call the next middleware', done => {
       const app = new Koa();
 
@@ -65,4 +65,37 @@ describe('Koa Basic Auth', () => {
       .end(done);
     })
   })
+  
+  describe('with invalid credentials as array', () => {
+    it('should `throw` 401', done => {
+      const app = new Koa();
+
+      app.use(basicAuth([{ name: 'user', pass: 'pass' }, { name: 'user_next', pass: 'pass_next' }]));
+
+      request(app.listen())
+      .get('/')
+      .auth('foo', 'bar')
+      .expect(401)
+      .end(done);
+    })
+  })
+
+  describe('with valid credentials as array', () => {
+    it('should call the next middleware', done => {
+      const app = new Koa();
+
+      app.use(basicAuth([{ name: 'user', pass: 'pass' }, { name: 'user_next', pass: 'pass_next' }]));
+      app.use(ctx => {
+        ctx.body = 'Protected';
+      })
+
+      request(app.listen())
+      .get('/')
+      .auth('user', 'pass')
+      .expect(200)
+      .expect('Protected')
+      .end(done);
+    })
+  })
+  
 })
