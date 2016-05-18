@@ -6,6 +6,14 @@ const assert = require('assert');
 const basicAuth = require('..');
 const Koa = require('koa');
 
+const validation = function(user) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(user && user.name === 'user' && user.pass === 'pass');
+    }, 300);
+  });  
+};
+
 describe('Koa Basic Auth', () => {
   describe('setup', () => {
     it('should throw an error when called with no name', () => {
@@ -50,14 +58,6 @@ describe('Koa Basic Auth', () => {
     it('should `throw` 401 validate throu async function', done => {
       const app = new Koa();
       
-      const validation = function(user) {
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            resolve(user && user.name === 'user' && user.pass === 'pass');
-          }, 300);
-        });  
-      };
-      
       app.use(basicAuth(validation));
 
       request(app.listen())
@@ -87,14 +87,6 @@ describe('Koa Basic Auth', () => {
     
     it('should call the next middleware with async validation function', done => {
       const app = new Koa();
-      
-      const validation = function(user) {
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            resolve(user && user.name === 'user' && user.pass === 'pass');
-          }, 300);
-        });  
-      };
 
       app.use(basicAuth(validation));
       app.use(ctx => {
