@@ -34,8 +34,8 @@ describe('Koa Basic Auth', () => {
     })
   })
 
-  describe('with invalid credentials as object', () => {
-    it('should `throw` 401', done => {
+  describe('with invalid credentials', () => {
+    it('should `throw` 401 validate throu object', done => {
       const app = new Koa();
 
       app.use(basicAuth({ name: 'user', pass: 'pass' }));
@@ -46,10 +46,30 @@ describe('Koa Basic Auth', () => {
       .expect(401)
       .end(done);
     })
+    
+    it('should `throw` 401 validate throu async function', done => {
+      const app = new Koa();
+      
+      const validation = function(user) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve(user && user.name === 'user' && user.pass === 'pass');
+          }, 300);
+        });  
+      };
+      
+      app.use(basicAuth(validation));
+
+      request(app.listen())
+      .get('/')
+      .auth('foo', 'bar')
+      .expect(401)
+      .end(done);
+    })
   })
 
-  describe('with valid credentials as object', () => {
-    it('should call the next middleware', done => {
+  describe('with valid credentials', () => {
+    it('should call the next middleware with credentials', done => {
       const app = new Koa();
 
       app.use(basicAuth({ name: 'user', pass: 'pass' }));
@@ -64,27 +84,19 @@ describe('Koa Basic Auth', () => {
       .expect('Protected')
       .end(done);
     })
-  })
-  
-  describe('with invalid credentials as array', () => {
-    it('should `throw` 401', done => {
+    
+    it('should call the next middleware with async validation function', done => {
       const app = new Koa();
+      
+      const validation = function(user) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve(user && user.name === 'user' && user.pass === 'pass');
+          }, 300);
+        });  
+      };
 
-      app.use(basicAuth([{ name: 'user', pass: 'pass' }, { name: 'user_next', pass: 'pass_next' }]));
-
-      request(app.listen())
-      .get('/')
-      .auth('foo', 'bar')
-      .expect(401)
-      .end(done);
-    })
-  })
-
-  describe('with valid credentials as array', () => {
-    it('should call the next middleware', done => {
-      const app = new Koa();
-
-      app.use(basicAuth([{ name: 'user', pass: 'pass' }, { name: 'user_next', pass: 'pass_next' }]));
+      app.use(basicAuth(validation));
       app.use(ctx => {
         ctx.body = 'Protected';
       })

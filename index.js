@@ -7,37 +7,49 @@
 
 const auth = require('basic-auth');
 const assert = require('assert');
-const _ = require('lodash');
 
 /**
  * Return basic auth middleware with
  * the given options:
- *
+ * 
+ * object: {name: 'username', pass: 'secret'}
  *  - `name` username
  *  - `pass` password
+ * 
+ * or
+ * synchronous function return boolean
+ * or 
+ * asynchronous function return promise with boolean
  *
- * @param {Object} opts
+ * @param {Object|function} opts
  * @return {GeneratorFunction}
  * @api public
  */
 
-module.exports = function(opts){
-  opts = opts || {};
+module.exports = function(validation) {
+  let credentials;
+  validation = validation || {};
 
-  if (_.isArray(opts) === false) {
-    assert(opts.name, 'basic auth .name required');
-    assert(opts.pass, 'basic auth .pass required');
+  if (typeof validation !== 'function') {
+    assert(validation.name, 'basic auth .name required');
+    assert(validation.pass, 'basic auth .pass required');
+    
+    credentials = validation;
+    
+    validation = function(user) {
+      if (user && user.name === credentials.name && user.pass === credentials.pass) {
+        return true;
+      }
+      
+      return false;
+    }
   }
 
-  return function basicAuth(ctx, next){
-    const user = auth(ctx);
-    
-    if (user && 
-       ((!_.isArray(opts) && user.name == opts.name && user.pass == opts.pass)
-       || (_.isArray(opts) && _.some(opts, {name: user.name, pass: user.pass}))) ) {
-      return next();
-    } else {
-      ctx.throw(401);
-    }
-  };
+  return (ctx, next) => Promise.resolve(validation(auth(ctx))).then((userStatus) => {
+      if (userStatus === true) {
+        next();
+      } else {
+        ctx.throw(401);
+      }
+    });
 };
