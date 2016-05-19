@@ -1,6 +1,6 @@
 # koa-basic-auth [![Build Status](https://travis-ci.org/koajs/basic-auth.png)](https://travis-ci.org/koajs/basic-auth)
 
-  Add simple "blanket" basic auth with username / password or array of credential objects . If you require
+  Add simple "blanket" basic auth with username / password or validation function. If you require
   anything more specific just use the [basic-auth](https://github.com/visionmedia/node-basic-auth) module.
 
 ## Installation
@@ -70,11 +70,17 @@ var auth = require('koa-basic-auth');
 
 app.use(mount('/admin', auth({ name: 'tobi', pass: 'ferret' })));
 ```
-## Multiple Credentials
-To use multiple credentials change the auth object to array.
+## Validation function
+To perform a user validation with its own function, it receives the user object with name and password as a parameter. The return-value must be a boolean. True with valid credentials, false otherwise.
+Also asynchronous functions are supported and passed in the best case a promise.
 
 ```js
-app.use(auth([{ name: 'tj', pass: 'tobi' }, { name: 'bb', pass: 'bob' }]));
+function myValidation(user) {
+  ...
+  return (user.name === db.username && user.pass === db.pass); 
+}
+  
+app.use(auth(myValidation));
 ```
 
 ## License
