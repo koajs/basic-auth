@@ -77,7 +77,7 @@ Also asynchronous functions are supported and passed in the best case a promise.
 ```js
 function myValidation(user) {
   ...
-  return (user.name === db.username && user.pass === db.pass); 
+  return user.name === db.username && user.pass === db.pass; 
 }
   
 app.use(auth(myValidation));

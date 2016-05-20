@@ -26,7 +26,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "basic-auth": "^1.0.3",
-    "lodash": "^4.12.0"
+    "basic-auth": "^1.0.3"
   }
 }

@@ -45,11 +45,13 @@ module.exports = function(validation) {
     }
   }
 
-  return (ctx, next) => Promise.resolve(validation(auth(ctx))).then((userStatus) => {
+  return function basicAuth(ctx, next) {
+    return Promise.resolve(validation(auth(ctx))).then((userStatus) => {
       if (userStatus === true) {
-        next();
+        return next();
       } else {
         ctx.throw(401);
       }
     });
+  }  
 };
