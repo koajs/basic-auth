@@ -6,7 +6,7 @@
 ## Installation
 
 ```js
-$ npm install koa-basic-auth
+$ npm install koa-basic-auth@next
 ```
 
 ## Example
@@ -14,20 +14,19 @@ $ npm install koa-basic-auth
   Password protect downstream middleware:
 
 ```js
-var auth = require('koa-basic-auth');
-var koa = require('koa');
-var app = koa();
+const auth = require('koa-basic-auth');
+const Koa = require('koa');
+const app = new Koa();
 
 // custom 401 handling
-
-app.use(function *(next){
+app.use(async (ctx, next) => {
   try {
-    yield next;
+    await next();
   } catch (err) {
     if (401 == err.status) {
-      this.status = 401;
-      this.set('WWW-Authenticate', 'Basic');
-      this.body = 'cant haz that';
+      ctx.status = 401;
+      ctx.set('WWW-Authenticate', 'Basic');
+      ctx.body = 'cant haz that';
     } else {
       throw err;
     }
@@ -35,17 +34,16 @@ app.use(function *(next){
 });
 
 // require auth
-
 app.use(auth({ name: 'tj', pass: 'tobi' }));
 
 // secret response
-
-app.use(function *(){
-  this.body = 'secret';
+app.use(async (ctx) => {
+  ctx.body = 'secret';
 });
 
-app.listen(3000);
-console.log('listening on port 3000');
+app.listen(3000, function () {
+  console.log('listening on port 3000');
+});
 ```
 
   Example request:
@@ -65,8 +63,8 @@ secret
  Using the [mount](https://github.com/koajs/mount) middleware you may specify auth for a given prefix:
 
 ```js
-var mount = require('koa-mount');
-var auth = require('koa-basic-auth');
+const mount = require('koa-mount');
+const auth = require('koa-basic-auth');
 
 app.use(mount('/admin', auth({ name: 'tobi', pass: 'ferret' })));
 ```
