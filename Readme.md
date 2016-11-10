@@ -19,7 +19,7 @@ const Koa = require('koa');
 const app = new Koa();
 
 // custom 401 handling
-app.use(async (ctx, next)=> {
+app.use(async (ctx, next) => {
   try {
     await next();
   } catch (err) {
@@ -37,7 +37,7 @@ app.use(async (ctx, next)=> {
 app.use(auth({ name: 'tj', pass: 'tobi' }));
 
 // secret response
-app.use(async (ctx)=> {
+app.use(async (ctx) => {
   ctx.body = 'secret';
 });
 
