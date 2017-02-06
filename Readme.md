@@ -1,6 +1,6 @@
 # koa-basic-auth [![Build Status](https://travis-ci.org/koajs/basic-auth.png)](https://travis-ci.org/koajs/basic-auth)
 
-  Add simple "blanket" basic auth with username / password. If you require
+  Add simple "blanket" basic auth with username / password or array of credential objects . If you require
   anything more specific just use the [basic-auth](https://github.com/visionmedia/node-basic-auth) module.
 
 ## Installation
@@ -67,6 +67,12 @@ const mount = require('koa-mount');
 const auth = require('koa-basic-auth');
 
 app.use(mount('/admin', auth({ name: 'tobi', pass: 'ferret' })));
+```
+## Multiple Credentials
+To use multiple credentials change the auth object to array.
+
+```js
+app.use(auth([{ name: 'tj', pass: 'tobi' }, { name: 'bb', pass: 'bob' }]));
 ```
 
 ## License
