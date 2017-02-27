@@ -6,7 +6,7 @@
 ## Installation
 
 ```js
-$ npm install koa-basic-auth@next
+$ npm install koa-basic-auth
 ```
 
 ## Example
