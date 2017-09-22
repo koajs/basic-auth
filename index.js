@@ -32,7 +32,8 @@ module.exports = function(opts){
     if (user && user.name == opts.name && user.pass == opts.pass) {
       return next();
     } else {
-      ctx.throw(401);
+      ctx.set('WWW-Authenticate', 'Basic realm="Secure Area"');
+      ctx.status = 401;
     }
   };
 };
