@@ -29,6 +29,7 @@ describe('Koa Basic Auth', () => {
 
       request(app.listen())
       .get('/')
+      .expect('WWW-Authenticate', 'Basic realm="Secure Area"')
       .expect(401)
       .end(done);
     })
@@ -43,8 +44,22 @@ describe('Koa Basic Auth', () => {
       request(app.listen())
       .get('/')
       .auth('foo', 'bar')
+      .expect('WWW-Authenticate', 'Basic realm="Secure Area"')
       .expect(401)
       .end(done);
+    })
+  })
+
+  describe('with custom realm message', () => {
+    it('should use this in `WWW-Authenticate` header', done => {
+      const app = new Koa();
+
+      app.use(basicAuth({ name: 'user', pass: 'pass', realm: 'custom "message"' }));
+
+      request(app.listen())
+        .get('/')
+        .expect('WWW-Authenticate', 'Basic realm="custom \\"message\\""')
+        .end(done);
     })
   })
 
