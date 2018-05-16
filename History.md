@@ -1,4 +1,12 @@
 
+3.0.0 / 2018-05-16
+==================
+
+ * show authentication window in browser (#15)
+ * npm: disable package-lock
+ * travis: add node 10
+ * bump deps
+
 2.0.0 / 2016-03-18
 ==================
 

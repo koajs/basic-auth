@@ -2,7 +2,7 @@
   "name": "koa-basic-auth",
   "description": "Blanket basic auth middleware for koa",
   "repository": "koajs/basic-auth",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "scripts": {
     "test": "NODE_ENV=test mocha --reporter spec --exit",
     "test-cov": "NODE_ENV=test istanbul cover ./node_modules/.bin/_mocha -- --exit",
