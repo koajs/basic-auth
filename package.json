@@ -4,9 +4,9 @@
   "repository": "koajs/basic-auth",
   "version": "2.0.0",
   "scripts": {
-    "test": "NODE_ENV=test mocha --reporter spec",
-    "test-cov": "NODE_ENV=test istanbul cover ./node_modules/.bin/_mocha",
-    "test-travis": "NODE_ENV=test istanbul cover ./node_modules/.bin/_mocha --report lcovonly"
+    "test": "NODE_ENV=test mocha --reporter spec --exit",
+    "test-cov": "NODE_ENV=test istanbul cover ./node_modules/.bin/_mocha -- --exit",
+    "test-travis": "NODE_ENV=test istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- --exit"
   },
   "keywords": [
     "koa",
@@ -19,13 +19,13 @@
     "index.js"
   ],
   "devDependencies": {
-    "istanbul": "0",
-    "koa": "^2.0.0-alpha.3",
-    "mocha": "2",
-    "supertest": "1"
+    "istanbul": "^0.4.5",
+    "koa": "^2.5.1",
+    "mocha": "^5.1.1",
+    "supertest": "^3.1.0"
   },
   "license": "MIT",
   "dependencies": {
-    "basic-auth": "^1.0.3"
+    "basic-auth": "^2.0.0"
   }
 }
