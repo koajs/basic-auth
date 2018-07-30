@@ -8,15 +8,9 @@ const Koa = require('koa');
 
 describe('Koa Basic Auth', () => {
   describe('setup', () => {
-    it('should throw an error when called with no name', () => {
+    it('should throw an error when called without name nor pass', () => {
       assert.throws(() => {
-        basicAuth({ pass: 'pass' });
-      });
-    })
-
-    it('should throw an error when called with no pass', () => {
-      assert.throws(() => {
-        basicAuth({ name: 'user' });
+        basicAuth();
       });
     })
   })

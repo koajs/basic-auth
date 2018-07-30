@@ -7,6 +7,7 @@
 
 const auth = require('basic-auth');
 const assert = require('assert');
+const compare = require('tsscmp');
 
 /**
  * Return basic auth middleware with
@@ -14,6 +15,7 @@ const assert = require('assert');
  *
  *  - `name` username
  *  - `pass` password
+ *  - `realm` realm
  *
  * @param {Object} opts
  * @return {GeneratorFunction}
@@ -23,20 +25,27 @@ const assert = require('assert');
 module.exports = function(opts){
   opts = opts || {};
 
-  assert(opts.name, 'basic auth .name required');
-  assert(opts.pass, 'basic auth .pass required');
+  if (!opts.name && !opts.pass)
+    throw new Error('Basic auth `name` and/or `pass` is required');
 
   if (!opts.realm) opts.realm = 'Secure Area';
 
   return function basicAuth(ctx, next) {
     const user = auth(ctx);
-
-    if (user && user.name == opts.name && user.pass == opts.pass) {
-      return next();
-    } else {
-      ctx.throw(401, null, { headers: {
-        'WWW-Authenticate': 'Basic realm="' + opts.realm.replace(/"/g, '\\"') + '"'
-      } });
-    }
+    if (
+      !user ||
+      (opts.name && !compare(opts.name, user.name)) ||
+      (opts.pass && !compare(opts.pass, user.pass))
+    )
+      return ctx.throw(
+        401,
+        null,
+        {
+          headers: {
+            'WWW-Authenticate': 'Basic realm="' + opts.realm.replace(/"/g, '\\"') + '"'
+          }
+        }
+      );
+    return next();
   };
 };
