@@ -27,6 +27,6 @@
   "license": "MIT",
   "dependencies": {
     "basic-auth": "^2.0.0",
-    "tsscmp": "git+https://github.com/niftylettuce/tsscmp.git"
+    "tsscmp": "^1.0.6"
   }
 }
