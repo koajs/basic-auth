@@ -6,7 +6,6 @@
  */
 
 const auth = require('basic-auth');
-const assert = require('assert');
 const compare = require('tsscmp');
 
 /**
