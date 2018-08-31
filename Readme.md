@@ -3,6 +3,8 @@
   Add simple "blanket" basic auth with username / password. If you require
   anything more specific just use the [basic-auth](https://github.com/visionmedia/node-basic-auth) module.
 
+  **v4.x+ Breaking Change:** This package no longer requires both a username and a password.  Either or is supported, see [#39](https://github.com/jshttp/basic-auth/issues/39) for more insight.
+
 ## Installation
 
 ```js
@@ -48,17 +50,15 @@ app.listen(3000, function () {
 
   Example request:
 
-```
-$ curl -H "Authorization: basic dGo6dG9iaQ==" http://localhost:3000/ -i
-HTTP/1.1 200 OK
-X-Powered-By: koa
-Content-Type: text/plain; charset=utf-8
-Content-Length: 6
-Date: Sat, 30 Nov 2013 19:35:17 GMT
-Connection: keep-alive
+    $ curl -H "Authorization: basic dGo6dG9iaQ==" http://localhost:3000/ -i
+    HTTP/1.1 200 OK
+    X-Powered-By: koa
+    Content-Type: text/plain; charset=utf-8
+    Content-Length: 6
+    Date: Sat, 30 Nov 2013 19:35:17 GMT
+    Connection: keep-alive
 
-secret
-```
+    secret
 
  Using the [mount](https://github.com/koajs/mount) middleware you may specify auth for a given prefix:
 
